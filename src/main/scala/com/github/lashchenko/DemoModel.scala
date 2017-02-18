@@ -1,0 +1,10 @@
+package com.github.lashchenko
+
+////////////////////////////////////////////////////////////////////////////////
+// MODELS
+////////////////////////////////////////////////////////////////////////////////
+
+sealed trait DemoModel
+
+case class DemoId(iId: Int, sId: String) extends DemoModel
+case class DemoData(id: DemoId, count: Option[Int], name: Option[String], enabled: Boolean) extends DemoModel
