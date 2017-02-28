@@ -71,7 +71,7 @@ class DemoDataDbService @Inject()(val dao: DemoDataDao) {
   }
 
   def plainSqlCountByName(name: String)(implicit ec: ExecutionContext) = {
-    val q = sql"SELECT count(*) FROM DEMO where name = '#$name'".as[Int].headOption
+    val q = sql"SELECT count(*) FROM DEMO where name = $name".as[Int].headOption
     db.run(q)
   }
 
