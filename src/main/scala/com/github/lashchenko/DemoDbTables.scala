@@ -2,7 +2,9 @@ package com.github.lashchenko
 
 import com.google.inject.Inject
 import slick.jdbc.GetResult
-import scala.concurrent.{Future, ExecutionContext}
+import slick.sql.SqlProfile.ColumnOption.Nullable
+
+import scala.concurrent.{ExecutionContext, Future}
 
 ////////////////////////////////////////////////////////////////////////////////
 // TABLES AND DAOs
@@ -11,8 +13,7 @@ import scala.concurrent.{Future, ExecutionContext}
 class DemoDataDao @Inject()(val dbComponent: DemoDbComponent) {
 
   import dbComponent._
-  import driver.profile.api._
-  import slick.profile.SqlProfile.ColumnOption.Nullable
+  import profile.api._
 
   class DemoDataTable(tag: Tag) extends Table[DemoData](tag, "demo") {
 
@@ -36,7 +37,7 @@ class DemoDataDao @Inject()(val dbComponent: DemoDbComponent) {
 class DemoDataDbService @Inject()(val dao: DemoDataDao) {
   import dao._
   import dbComponent._
-  import driver.profile.api._
+  import profile.api._
 
   def create()(implicit ec: ExecutionContext) = {
     val q = demoDataTable.schema.create
@@ -71,14 +72,14 @@ class DemoDataDbService @Inject()(val dao: DemoDataDao) {
   }
 
   def plainSqlCountByName(name: String)(implicit ec: ExecutionContext) = {
-    val q = sql"SELECT count(*) FROM DEMO where name = $name".as[Int].headOption
+    val q = sql"SELECT count(*) FROM demo where name = $name".as[Int].headOption
     db.run(q)
   }
 
   def plainSqlCustomResult()(implicit ec: ExecutionContext) = {
     type CustomType = (Option[Int], Option[String])
     implicit val sqlResToIntStr = GetResult { r => (r.<<[Option[Int]], r.<<[Option[String]]) }
-    val q = sql"""SELECT "count", "name" FROM DEMO""".as[CustomType]
+    val q = sql"""SELECT "count", "name" FROM demo""".as[CustomType]
     db.run(q)
   }
 

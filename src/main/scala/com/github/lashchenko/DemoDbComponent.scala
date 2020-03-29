@@ -5,30 +5,30 @@ package com.github.lashchenko
 ////////////////////////////////////////////////////////////////////////////////
 
 trait DemoDbComponent {
-  import slick.driver.JdbcDriver
-  val driver: JdbcDriver
+  import slick.jdbc.JdbcProfile
+  val profile: JdbcProfile
 
-  import driver.api._
+  import profile.api._
   val db: Database
 }
 
 class MySqlDbComponent extends DemoDbComponent {
-  import slick.driver.MySQLDriver.api._
+  import slick.jdbc.MySQLProfile.api._
 
-  val driver = slick.driver.MySQLDriver
+  val profile = slick.jdbc.MySQLProfile
   val db = Database.forConfig("mysql")
 }
 
 class SQLiteDbComponent extends DemoDbComponent {
-  import slick.driver.SQLiteDriver.api._
+  import slick.jdbc.SQLiteProfile.api._
 
-  val driver = slick.driver.SQLiteDriver
+  val profile = slick.jdbc.SQLiteProfile
   val db = Database.forConfig("sqlite")
 }
 
 class H2DbComponent extends DemoDbComponent {
-  import slick.driver.H2Driver.api._
+  import slick.jdbc.H2Profile.api._
 
-  val driver = slick.driver.H2Driver
+  val profile = slick.jdbc.H2Profile
   val db = Database.forConfig("h2")
 }
